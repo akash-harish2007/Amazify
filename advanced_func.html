@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Functions</title>
+</head>
+<body>
+    <button onclick="" class="js-button">Click Me</button>
+
+
+
+    <script>
+        const button = document.querySelector(".js-button");
+
+        button.addEventListener("click", function greeting(){
+            console.log("Hello World");
+        });
+
+        button.addEventListener("click1", function(){
+            console.log("Hello World");
+        });
+
+
+        button.removeEventListener("click", function greeting(){
+            console.log("Hello World");
+        }); /* does not work because the function is anonymous and cannot be referenced */
+
+        const eventlistener = () => {
+            console.log("Hello World");
+        };
+
+        button.addEventListener("click", eventlistener);
+
+        button.removeEventListener("click", eventlistener); /* works because the function is named and can be referenced */
+
+        document.body.addEventListener('keydown', function(event){
+            console.log(event.key);
+        }); /* logs the key that was pressed */
+
+
+
+        document.body.addEventListener('keydown', function(event){
+            if(event.key === "Enter"){
+                console.log("Enter key was pressed");
+            }
+        }); /* logs when the Enter key is pressed */
+
+        console.log([1,2,-3].map(function(num){
+            return num * 2;
+        })); /* maps over the array and returns a new array with the function applied to each element */
+
+
+        console.log([1,2,-3].filter(function(num){
+
+            if (num > 0) {
+                return true;
+            } else {
+                return false;
+            }
+            
+        })); /* filters the array and returns a new array with only the elements that pass the test */
+
+
+        console.lo([1,1,3]).map(num => num * 2); /* arrow function version of map */
+
+
+        // function greeting(){
+        //     console.log("Hello World");
+        // }
+        // greeting();
+
+
+        // const function1 = function /*anonymous function*/(){
+        //     console.log("Hello World");
+        // }
+        // console.log(function1);
+        // function1();
+
+
+        // const object1 = {
+        //     name : "John",
+        //     age : 30,
+        //     greet : function(){
+        //         console.log("Hello " + this.name);
+        //     }
+        // }
+        // object1.greet();
+
+
+        // function sum(a){
+        //     console.log(a);
+        // }
+        // sum(function1());
+
+        // setTimeout(function(){
+        //     console.log("Hello World");
+        // }, 2000); /* executes function after 2 seconds */
+        // /*asynchronous code */
+        // let variable1;
+
+        // variable1 = setInterval(function(){
+        //     console.log("Hello World");
+        // }, 2000); /* executes function every 2 seconds */
+
+        // clearInterval(variable1); /* stops setInterval */
+
+
+
+        // const arrowFunction = param => {
+        //     console.log("Hello World");
+        // };
+        // arrowFunction(2);
+    </script>
+    
+</body>
+</html>
