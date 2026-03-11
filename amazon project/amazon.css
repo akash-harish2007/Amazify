@@ -895,3 +895,35 @@ main {
     height: 550px;
     margin-top: 20px;
 }
+
+
+
+.notification-bar {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+
+    background-color: #2ecc71;
+    color: white;
+
+    padding: 12px 20px;
+    border-radius: 8px;
+
+    font-family: Arial;
+    font-size: 14px;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+
+    opacity: 0;
+    transform: translateY(-10px);
+
+    transition: all 0.3s ease;
+
+    z-index: 1000;
+}
+
+.notification-bar.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
