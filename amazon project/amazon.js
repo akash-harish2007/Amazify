@@ -661,6 +661,8 @@ cartItems = [
 ];
 
 
+
+
 let productsHTML = '';
 cartItems.forEach((cartItems) => {
 
@@ -683,18 +685,19 @@ cartItems.forEach((cartItems) => {
                         
                         <div class="in-stock-badge"> In Stock</div>
                         
-                        <button onclick="addToCart(this)" class="add-to-cart-btn   js-add-cart"  data-product-name="${cartItems.name}">Add to Cart</button>
+                        <button onclick="addToCart(this)" class="add-to-cart-btn   js-add-cart"  data-product-name="${cartItems.name}"  data-image="${cartItems.image}"  data-price-cents="${cartItems.priceCents}">Add to Cart</button>
                     </div>
                 </div>`
 
 
 })
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
+localStorage.setItem('cartItems', JSON.stringify(cartItems));
 
 // This runs when page loads
 document.addEventListener('DOMContentLoaded', function () {
     console.log('✅ Page loaded, initializing cart...');
-    
+
 });
 
 
@@ -896,7 +899,7 @@ function notification(message) {
     notificationBar.textContent = message;
     updateCartCount()
 
-    
+
 
     setTimeout(() => {
         notificationBar.classList.add('show');
@@ -905,48 +908,58 @@ function notification(message) {
     setTimeout(() => {
         notificationBar.classList.remove('show');
     }, 2000);
-    
+
 }
 
 
 
-let cart = [];
 
-function addToCart(button) {
-    const productName = button.dataset.productName;
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-    let existingItem = null
+    function addToCart(button) {
+        const productName = button.dataset.productName;
+        const image = button.dataset.image;
+        const priceCents = Number(button.dataset.priceCents);
 
-    cart.forEach((item) => {
-        if (item.productName === productName){
-            existingItem=item
-        }
-    });
+        let existingItem = null;
 
-    if (existingItem){
-        existingItem.quantity+=1;
-    }
-    else {
-
-        cart.push({
-            productName: productName,
-            quantity: 1
+        cart.forEach((item) => {
+            if (item.productName === productName) {
+                existingItem = item;
+            }
         });
+
+        if (existingItem) {
+            existingItem.quantity += 1;
+            existingItem.image = image;
+            existingItem.priceCents = priceCents;
+        } else {
+            cart.push({
+                productName: productName,
+                quantity: 1,
+                image: image,
+                priceCents: priceCents
+            });
+        }
+
+        console.log(cart);
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        button.textContent = "Added!";
+    
+    
+        setTimeout(() => {
+            button.textContent = " Add to Cart";
+        }, 1000);
+    
+        updateCartCount()
+        notification(` ${productName} Added to Cart `)
+        localStorage.setItem('cart', JSON.stringify(cart));
     }
 
-    button.textContent = "Added!";
 
 
-    setTimeout(() => {
-        button.textContent = " Add to Cart";
-    }, 1000);
 
-    updateCartCount()
-    notification(` ${productName} Added to Cart `)
-    localStorage.setItem('cart',JSON.stringify(cart));
-
-
-}
 function showCartStatus() {
     if (cart.length >= 5) {
         alert("You have " + cart.length + " items in your cart. Don't forget to check out!");
@@ -1094,11 +1107,11 @@ function deleteItem(itemId) {
 let cartHTML = '';
 
 cart.forEach((item) => {
-  cartHTML += `
+    cartHTML += `
   <div class="cart-item">
       <div class="product-name">${item.productName}</div>
       <div>Quantity: ${item.quantity}</div>
-      <div>$${(item.priceCents/100).toFixed(2)}</div>
+      <div>$${(item.priceCents / 100).toFixed(2)}</div>
   </div>
   `;
 });

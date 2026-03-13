@@ -42,130 +42,13 @@
         <!-- Main Content -->
         <main class="main-content">
             <h1 class="page-title">Review your order</h1>
-            
-            <!-- Orders Container -->
-            <div class="orders-review-container">
-                <!-- Order Item 1 -->
-                <div class="order-review-card">
-                    <div class="delivery-header">
-                        <span class="delivery-label">Delivery date:</span>
-                        <span class="delivery-date">Wednesday, March 18</span>
-                    </div>
-                    
-                    <div class="order-item-content">
-                        <div class="item-image">
-                            <img src="intermediate-composite-basketball.jpg" alt="Basketball">
-                        </div>
-                        
-                        <div class="item-info">
-                            <h3 class="item-name">Intermediate Size Basketball</h3>
-                            <div class="item-price">$20.95</div>
-                            
-                            <div class="item-quantity-control">
-                                <span>Quantity: 1</span>
-                                <div class="item-actions">
-                                    <button class="action-link" onclick="window.location.href='amazon.html'">Update</button>
-                                    <span class="action-separator">|</span>
-                                    <button class="action-link"  onclick="deleteItem(1)">Delete</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Order Summary for this item -->
-                    <div class="order-summary-card">
-                        <h4 class="summary-title">Order Summary</h4>
-                        
-                        <div class="summary-row">
-                            <span>Items (3):</span>
-                            <span>$47.93</span>
-                        </div>
-                        
-                        <div class="summary-row">
-                            <span>Shipping & handling:</span>
-                            <span>$0.00</span>
-                        </div>
-                        
-                        <div class="summary-row">
-                            <span>Total before tax:</span>
-                            <span>$47.93</span>
-                        </div>
-                        
-                        <div class="summary-row">
-                            <span>Estimated tax (10%):</span>
-                            <span>$4.79</span>
-                        </div>
-                        
-                        <div class="summary-row total-row">
-                            <span>Order total:</span>
-                            <span class="total-price">$52.72</span>
-                        </div>
-                        
-                        <button class="place-order-btn"  onclick="window.location.href='track_order1.html'">Place your order</button>
-                    </div>
-                </div>
-                
-                <!-- Order Item 2 -->
-                <div class="order-review-card">
-                    <div class="delivery-header">
-                        <span class="delivery-label">Delivery date:</span>
-                        <span class="delivery-date">Wednesday, March 18</span>
-                    </div>
-                    
-                    <div class="order-item-content">
-                        <div class="item-image">
-                            <img src="adults-plain-cotton-tshirt-2-pack-teal.jpg" alt="T-Shirt">
-                        </div>
-                        
-                        <div class="item-info">
-                            <h3 class="item-name">Adults Plain Cotton T-Shirt - 2 Pack</h3>
-                            <div class="item-price">$7.99</div>
-                            
-                            <div class="item-quantity-control">
-                                <span>Quantity: 1</span>
-                                <div class="item-actions">
-                                    <button class="action-link" onclick="window.location.href='amazon.html'">Update</button>
-                                    <span class="action-separator" onclick="deleteItem(1)">|</span>
-                                    <button class="action-link">Delete</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Order Summary for this item -->
-                    <div class="order-summary-card">
-                        <h4 class="summary-title">Order Summary</h4>
-                        
-                        <div class="summary-row">
-                            <span>Items (3):</span>
-                            <span>$47.93</span>
-                        </div>
-                        
-                        <div class="summary-row">
-                            <span>Shipping & handling:</span>
-                            <span>$0.00</span>
-                        </div>
-                        
-                        <div class="summary-row">
-                            <span>Total before tax:</span>
-                            <span>$47.93</span>
-                        </div>
-                        
-                        <div class="summary-row">
-                            <span>Estimated tax (10%):</span>
-                            <span>$4.79</span>
-                        </div>
-                        
-                        <div class="summary-row total-row">
-                            <span>Order total:</span>
-                            <span class="total-price">$52.72</span>
-                        </div>
-                        
-                        <button class="place-order-btn"  onclick="window.location.href='track_order1.html'">Place your order</button>
-                    </div>
-                </div>
-            </div>
+
+            <div class="orders-review-container js-cart-items"></div>
         </main>
     </div>
+
+    <script src="cart.js"></script>
+ 
+
 </body>
 </html>
