@@ -116,8 +116,8 @@ function deleteItem(index) {
   } else {
     cart.splice(index, 1);
     localStorage.setItem('cart', JSON.stringify(cart));
-    renderCart();
     notification('Item removed from cart')
+    renderCart();
   }
 }
 
