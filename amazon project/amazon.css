@@ -639,6 +639,11 @@ main {
     height: 100px;
 }
 
+.main-checkout-title{
+    display: flex;
+    justify-content: center;
+}
+
 .progress-bar {
     width: 100%;
     height: 10px;
@@ -661,6 +666,13 @@ main {
     align-items: center;
     margin-left: 590px;
 
+}
+
+.view-orders-btn{
+    display: block;
+    margin: 0 auto;
+    padding-bottom: 200px;
+    
 }
 
 .calculate-btn {
