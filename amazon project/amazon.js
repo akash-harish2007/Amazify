@@ -684,8 +684,15 @@ cartItems.forEach((cartItems) => {
                         </div>
                         
                         <div class="in-stock-badge"> In Stock</div>
-                        
-                        <button onclick="addToCart(this)" class="add-to-cart-btn   js-add-cart"  data-product-name="${cartItems.name}"  data-image="${cartItems.image}"  data-price-cents="${cartItems.priceCents}">Add to Cart</button>
+                        <button
+  onclick="addToCart(this)"
+  class="add-to-cart-btn js-add-cart"
+  data-product-name="${cartItems.name}"
+  data-image="${cartItems.image}"
+  data-price-cents="${cartItems.priceCents}"
+  data-id="${cartItems.id}">
+  Add to Cart
+</button>
                     </div>
                 </div>`
 
@@ -791,11 +798,6 @@ function displayOrders() {
     console.log('✅ Display complete!', cartItems.length, 'items shown');
 }
 
-
-function trackPackage() {
-
-}
-
 function updateOrderSummary(total) {
     // Update total
     const totalElement = document.getElementById('order-total');
@@ -820,15 +822,6 @@ function updateOrderSummary(total) {
         });
         dateElement.textContent = dateStr;
     }
-}
-
-function generateOrderId() {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let id = '';
-    for (let i = 0; i < 7; i++) {
-        id += chars[Math.floor(Math.random() * chars.length)];
-    }
-    return id;
 }
 
 function saveCart() {
@@ -916,46 +909,48 @@ function notification(message) {
 
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-    function addToCart(button) {
-        const productName = button.dataset.productName;
-        const image = button.dataset.image;
-        const priceCents = Number(button.dataset.priceCents);
+function addToCart(button) {
+    const productName = button.dataset.productName;
+    const image = button.dataset.image;
+    const priceCents = Number(button.dataset.priceCents);
+    const id = button.dataset.id;
 
-        let existingItem = null;
+    let existingItem = null;
 
-        cart.forEach((item) => {
-            if (item.productName === productName) {
-                existingItem = item;
-            }
-        });
-
-        if (existingItem) {
-            existingItem.quantity += 1;
-            existingItem.image = image;
-            existingItem.priceCents = priceCents;
-        } else {
-            cart.push({
-                productName: productName,
-                quantity: 1,
-                image: image,
-                priceCents: priceCents
-            });
+    cart.forEach((item) => {
+        if (item.productName === productName) {
+            existingItem = item;
         }
+    });
 
-        console.log(cart);
-
-        localStorage.setItem('cart', JSON.stringify(cart));
-        button.textContent = "Added!";
-    
-    
-        setTimeout(() => {
-            button.textContent = " Add to Cart";
-        }, 1000);
-    
-        updateCartCount()
-        notification(` ${productName} Added to Cart `)
-        localStorage.setItem('cart', JSON.stringify(cart));
+    if (existingItem) {
+        existingItem.quantity += 1;
+        existingItem.image = image;
+        existingItem.priceCents = priceCents;
+    } else {
+        cart.push({
+            id: id,
+            productName: productName,
+            quantity: 1,
+            image: image,
+            priceCents: priceCents
+        });
     }
+
+    console.log(cart);
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    button.textContent = "Added!";
+
+
+    setTimeout(() => {
+        button.textContent = " Add to Cart";
+    }, 1000);
+
+    updateCartCount()
+    notification(` ${productName} Added to Cart `)
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
 
 
 
@@ -970,13 +965,6 @@ function showCartStatus() {
 }
 
 
-
-
-
-function resetcart() {
-    cart = []
-    document.getElementById('cart-count').textContent = cart;
-}
 
 
 function generateOrderId() {
@@ -1104,17 +1092,5 @@ function deleteItem(itemId) {
 }
 
 
-let cartHTML = '';
 
-cart.forEach((item) => {
-    cartHTML += `
-  <div class="cart-item">
-      <div class="product-name">${item.productName}</div>
-      <div>Quantity: ${item.quantity}</div>
-      <div>$${(item.priceCents / 100).toFixed(2)}</div>
-  </div>
-  `;
-});
-
-document.querySelector('.js-cart-items').innerHTML = cartHTML;
 

@@ -1,4 +1,34 @@
-const cart = JSON.parse(localStorage.getItem('cart')) || [];
+let cart = clearOldOrders()
+
+function clearOldOrders() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Start of today
+    
+    // Filter out items ordered before today
+    const updatedCart = cart.filter(item => {
+        if (!item.orderDate) return true; // Keep items without date
+        
+        const orderDate = new Date(item.orderDate);
+        orderDate.setHours(0, 0, 0, 0);
+        
+        return orderDate >= today; // Keep only today or future orders
+    });
+    
+    // If cart changed, update localStorage
+    if (updatedCart.length !== cart.length) {
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+        console.log(`Removed ${cart.length - updatedCart.length} old orders`);
+    }
+    
+    return updatedCart;
+}
+
+// Call this when your page loads
+document.addEventListener('DOMContentLoaded', () => {
+    cart = clearOldOrders();
+    renderCart(); // Your existing render function
+});
 
 function renderCart() {
     const cartContainer = document.querySelector('.js-cart-items');
