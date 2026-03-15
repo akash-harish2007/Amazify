@@ -12,13 +12,13 @@ function renderCart() {
   let totalItems1 = 0;
   let totalPriceCents1 = 0;
 
-  // calculate totals once
+  // calculate totals once - FIXED HERE
   cart.forEach((item1) => {
     const quantity = Number(item1.quantity) || 0;
-    const priceCents = Number(item1.priceCents1) || 0;
+    const priceCents = Number(item1.priceCents) || 0;  // ← Changed from priceCents1
 
     totalItems1 += quantity;
-    totalPriceCents1 += priceCents * quantity;
+    totalPriceCents1 += priceCents * quantity;  // ← Changed from priceCents1
   });
 
   // if cart empty
@@ -42,11 +42,11 @@ function renderCart() {
     </div>
   `;
 
-  // render items
+  // render items - FIXED HERE TOO
   cart.forEach((item1, index) => {
     const quantity = Number(item1.quantity) || 0;
-    const priceCents = Number(item1.priceCents1) || 0;
-    const itemPrice = (priceCents / 100).toFixed(2);
+    const priceCents = Number(item1.priceCents) || 0;  // ← Changed from priceCents1
+    const itemPrice1 = (priceCents / 100).toFixed(2);  // ← Changed from priceCents1
 
     cartHTML1 += `
       <div class="order-card" data-index="${index}">
@@ -56,7 +56,7 @@ function renderCart() {
           <div class="product-details">
             <h2>${item1.productName}</h2>
             <p><strong>Quantity:</strong> ${quantity}</p>
-            <p><strong>Price:</strong> $${itemPrice}</p>
+            <p><strong>Price:</strong> $${itemPrice1}</p>
 
             <div class="item-actions">
               <button class="delete-btn" onclick="deleteItem(${index})">Delete</button>
@@ -90,7 +90,7 @@ function renderCart() {
     `;
   });
 
-  // summary
+  // summary - FIXED (these were already correct, using totalPriceCents1)
   const taxCents1 = totalPriceCents1 * 0.10;
   const finalTotalCents1 = totalPriceCents1 + taxCents1;
 
