@@ -42,11 +42,15 @@ function renderCart() {
         totalItems += item.quantity;
         totalPriceCents += Number(item.priceCents) * item.quantity;
 
+
+        const deliveryDays = 3 + (index % 3); // 3, 4, or 5 days
+        const deliveryDate = getDeliveryDate(deliveryDays);
+
         cartHTML += `
             <div class="order-review-card">
                 <div class="delivery-header">
                     <span class="delivery-label">Delivery date:</span>
-                    <span class="delivery-date">Wednesday, March 18</span>
+                    <span class="delivery-date">${deliveryDate}</span>
                 </div>
 
                 <div class="order-item-content">
@@ -119,3 +123,17 @@ function deleteItem(index) {
 }
 
 renderCart();
+
+
+function getDeliveryDate(daysToAdd) {
+    const date = new Date();
+    date.setDate(date.getDate() + daysToAdd);
+    
+    // Format the date
+    return date.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        month: 'long', 
+        day: 'numeric',
+        year: 'numeric'
+    });
+}
