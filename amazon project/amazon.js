@@ -1,4 +1,6 @@
 // Cart items array
+
+
 cartItems = [
     {
         id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -659,212 +661,94 @@ cartItems = [
         ]
     }
 ];
-
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
+/* ---------------------------
+   RENDER PRODUCTS
+--------------------------- */
+function renderProducts() {
+  const productsGrid = document.querySelector('.js-products-grid');
+  if (!productsGrid) return;
 
-let productsHTML = '';
-cartItems.forEach((cartItems) => {
+  let productsHTML = '';
 
+  cartItems.forEach((item) => {
     productsHTML += `
-    <div class="product-card  js-products-grid">
-                    <img src="${cartItems.image}" alt="T-Shirt">
-                    <div class="product-name">${cartItems.name}</div>
-                    <div class="product-rating">⭐⭐⭐⭐⭐ <span class="rating-count">2197</span></div>
-                    <div class="product-price">${(cartItems.priceCents / 100).toFixed(2)}</div>
-                    
-                    <div class="purchase-section">
-                        <div class="quantity-row">
-                            <span class="quantity-label">Qty:</span>
-                            <select class="quantity-dropdown">
-                                <option value="1" selected>1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                            </select>
-                        </div>
-                        
-                        <div class="in-stock-badge"> In Stock</div>
-                        <button
-  onclick="addToCart(this)"
-  class="add-to-cart-btn js-add-cart"
-  data-product-name="${cartItems.name}"
-  data-image="${cartItems.image}"
-  data-price-cents="${cartItems.priceCents}"
-  data-id="${cartItems.id}">
-  Add to Cart
-</button>
-                    </div>
-                </div>`
+      <div class="product-card">
+        <img src="${item.image}" alt="${item.name}">
+        <div class="product-name">${item.name}</div>
+        <div class="product-rating">
+          ⭐⭐⭐⭐⭐ <span class="rating-count">${item.rating.count}</span>
+        </div>
+        <div class="product-price">AED ${(item.priceCents / 100).toFixed(2)}</div>
 
+        <div class="purchase-section">
+          <div class="quantity-row">
+            <span class="quantity-label">Qty:</span>
+            <select class="quantity-dropdown">
+              <option value="1" selected>1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
 
-})
-document.querySelector('.js-products-grid').innerHTML = productsHTML;
-localStorage.setItem('cartItems', JSON.stringify(cartItems));
+          <div class="in-stock-badge">In Stock</div>
 
-// This runs when page loads
-document.addEventListener('DOMContentLoaded', function () {
-    console.log('✅ Page loaded, initializing cart...');
+          <button
+            onclick="addToCart(this)"
+            class="add-to-cart-btn js-add-cart"
+            data-product-name="${item.name}"
+            data-image="${item.image}"
+            data-price-cents="${item.priceCents}"
+            data-id="${item.id}">
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    `;
+  });
 
-});
-
-
-function displayOrders() {
-    console.log('📋 Displaying orders...');
-
-    // Find the container
-    const container = document.getElementById('order-items-list');
-
-    // DEBUG: Check if container exists
-    console.log('Container element:', container);
-
-    if (!container) {
-        console.error('❌ ERROR: Could not find element with id "order-items-list"');
-        console.log('🔧 Fix: Make sure your HTML has <div id="order-items-list"></div>');
-        return;
-    }
-
-    // Check if cart has items
-    console.log('Cart items:', cartItems);
-
-    if (!cartItems || cartItems.length === 0) {
-        container.innerHTML = '<div class="empty-orders">No orders yet</div>';
-        return;
-    }
-
-    // Calculate total
-    let totalAmount = 0;
-    let itemsHTML = '';
-    let shipping = 0;
-
-    // Loop through each item and create HTML
-    cartItems.forEach((item, index) => {
-        console.log(`Creating HTML for item ${index}:`, item.name);
-
-        const itemTotal = item.price * item.quantity * 1.05 * shipping; // Adding 5% tax
-        totalAmount += itemTotal;
-
-        // Calculate arrival date (3-10 days from now)
-        const arrivalDate = new Date();
-        arrivalDate.setDate(arrivalDate.getDate() + Math.floor(Math.random() * 7) + 3);
-        const arrivalStr = arrivalDate.toLocaleDateString('en-US', {
-            month: 'long',
-            day: 'numeric'
-        });
-
-        // Create HTML for this item
-        itemsHTML += `
-            <div class="order-item">
-                <div class="item-image">
-                    <img src="${item.image}" alt="${item.name}" 
-                         onerror="this.src='https://via.placeholder.com/80'">
-                </div>
-                <div class="item-details">
-                    <h3 class="item-name">${item.name}</h3>
-                    <div class="item-price">AED ${item.price.toFixed(2)}</div>
-                    <div class="item-quantity">Quantity: ${item.quantity}</div>
-                    <div class="item-arrival">Arriving on: ${arrivalStr}</div>
-                    <div class="item-actions">
-                        <button class="buy-again-btn" onclick="buyAgain(${item.id})">Buy it again</button>
-                        <button class="track-button"  onclick="window.location.href='track_order.html'">Track package</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="order-item">
-                <div class="item-image">
-                    <img src="adults-plain-cotton-tshirt-2-pack-teal.jpg" alt="Adults Plain Cotton T-Shirt - 2 Pack" 
-                         onerror="this.src='https://via.placeholder.com/80'">
-                </div>
-                <div class="item-details">
-                    <h3 class="item-name">Adults Plain Cotton T-Shirt - 2 Pack</h3>
-                    <div class="item-price">AED $37.5</div>
-                    <div class="item-quantity">Quantity: 2</div>
-                    <div class="item-arrival">Arriving on: March 17</div>
-                    <div class="item-actions">
-                        <button class="buy-again-btn" onclick="buyAgain(${item.id})">Buy it again</button>
-                        <button class="track-button" onclick="window.location.href='track_order1.html'">Track package</button>
-                    </div>
-                </div>
-            </div>
-        `;
-    });
-
-    // Insert all HTML at once
-    container.innerHTML = itemsHTML;
-
-    // Update order summary
-    updateOrderSummary(totalAmount);
-
-    console.log('✅ Display complete!', cartItems.length, 'items shown');
+  productsGrid.innerHTML = productsHTML;
 }
 
-
-
-
+/* ---------------------------
+   UPDATE CART COUNT
+--------------------------- */
 function updateCartCount() {
-    let quantity = 0;
-    // This would update the cart badge in the header
-    cart.forEach((item) => {
-        quantity += item.quantity;
-    });
+  let quantity = 0;
 
-    document.querySelector('.js-count').innerHTML = quantity
+  cart.forEach((item) => {
+    quantity += item.quantity;
+  });
+
+  const countElement = document.querySelector('.js-count');
+  if (countElement) {
+    countElement.innerHTML = quantity;
+  }
 }
 
-
-function searchbar() {
-
-    const input = document.getElementById('search-area');
-
-    const products = document.querySelectorAll('.product-card');
-
-    products.forEach(product => {
-
-        const title = product.querySelector('.product-name').textContent.toLowerCase();
-
-        if (title.includes(input.value.toLowerCase())) {
-
-            product.style.display = 'block';
-        }
-
-        else {
-
-            product.style.display = 'none';
-        }
-    });
-
-    document.getElementById('search-area').addEventListener('keydown', function (event) {
-
-        if (event.key === 'Enter') {
-            console.log('🔍 Search triggered by Enter key');
-            event.preventDefault(); // Prevent form submission if inside a form
-            searchbar();
-
-        }
-
-
-    })
-};
-
-
+/* ---------------------------
+   NOTIFICATION
+--------------------------- */
 function notification(message) {
-    const notificationBar = document.querySelector('.js-notification');
+  const notificationBar = document.querySelector('.js-notification');
+  if (!notificationBar) return;
 
-    notificationBar.textContent = message;
-    updateCartCount()
+  notificationBar.textContent = message;
+  updateCartCount();
 
+  setTimeout(() => {
+    notificationBar.classList.add('show');
+  }, 10);
 
-
-    setTimeout(() => {
-        notificationBar.classList.add('show');
-    }, 10);
-
-    setTimeout(() => {
-        notificationBar.classList.remove('show');
-    }, 2000);
-
+  setTimeout(() => {
+    notificationBar.classList.remove('show');
+  }, 2000);
 }
 
+/* ---------------------------
+   ADD TO CART
+--------------------------- */
 function addToCart(button) {
   const productName = button.dataset.productName;
   const image = button.dataset.image;
@@ -872,14 +756,19 @@ function addToCart(button) {
   const id = button.dataset.id;
 
   const productCard = button.closest('.product-card');
-  const selectedQuantity = Number(
-    productCard.querySelector('.quantity-dropdown').value
-  );
+
+  let selectedQuantity = 1;
+  if (productCard) {
+    const dropdown = productCard.querySelector('.quantity-dropdown');
+    if (dropdown) {
+      selectedQuantity = Number(dropdown.value);
+    }
+  }
 
   let existingItem = null;
 
   cart.forEach((item) => {
-    if (item.productName === productName) {
+    if (item.id === id) {
       existingItem = item;
     }
   });
@@ -901,16 +790,107 @@ function addToCart(button) {
   localStorage.setItem('cart', JSON.stringify(cart));
   updateCartCount();
 
-  button.textContent = "Added!";
-  setTimeout(() => {
-    button.textContent = "Add to Cart";
-  }, 1000);
+  if (button) {
+    button.textContent = 'Added!';
+    setTimeout(() => {
+      button.textContent = 'Add to Cart';
+    }, 1000);
+  }
 
   notification(`${productName} Added to Cart`);
 }
 
+/* ---------------------------
+   SEARCH
+--------------------------- */
+function searchbar() {
+  const input = document.getElementById('search-area');
+  if (!input) return;
 
+  const products = document.querySelectorAll('.product-card');
 
+  products.forEach((product) => {
+    const titleElement = product.querySelector('.product-name');
+    if (!titleElement) return;
 
+    const title = titleElement.textContent.toLowerCase();
 
+    if (title.includes(input.value.toLowerCase())) {
+      product.style.display = 'block';
+    } else {
+      product.style.display = 'none';
+    }
+  });
+}
 
+/* ---------------------------
+   SEARCH ENTER KEY
+--------------------------- */
+document.addEventListener('DOMContentLoaded', function () {
+  renderProducts();
+  updateCartCount();
+
+  const searchInput = document.getElementById('search-area');
+  if (searchInput) {
+    searchInput.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        searchbar();
+      }
+    });
+  }
+});
+
+/* ---------------------------
+   DISPLAY ORDERS
+--------------------------- */
+function displayOrders() {
+  const container = document.getElementById('order-items-list');
+  if (!container) return;
+
+  if (!cart || cart.length === 0) {
+    container.innerHTML = '<div class="empty-orders">No orders yet</div>';
+    return;
+  }
+
+  let totalAmount = 0;
+  let itemsHTML = '';
+
+  cart.forEach((item) => {
+    const unitPrice = item.priceCents / 100;
+    const itemTotal = unitPrice * item.quantity;
+    totalAmount += itemTotal;
+
+    const arrivalDate = new Date();
+    arrivalDate.setDate(arrivalDate.getDate() + Math.floor(Math.random() * 7) + 3);
+
+    const arrivalStr = arrivalDate.toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric'
+    });
+
+    itemsHTML += `
+      <div class="order-item">
+        <div class="item-image">
+          <img src="${item.image}" alt="${item.productName}">
+        </div>
+        <div class="item-details">
+          <h3 class="item-name">${item.productName}</h3>
+          <div class="item-price">AED ${unitPrice.toFixed(2)}</div>
+          <div class="item-quantity">Quantity: ${item.quantity}</div>
+          <div class="item-arrival">Arriving on: ${arrivalStr}</div>
+          <div class="item-actions">
+            <button class="buy-again-btn">Buy it again</button>
+            <button class="track-button" onclick="window.location.href='track_order.html'">Track package</button>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = itemsHTML;
+
+  if (typeof updateOrderSummary === 'function') {
+    updateOrderSummary(totalAmount);
+  }
+}
