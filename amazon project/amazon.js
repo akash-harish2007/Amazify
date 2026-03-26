@@ -660,7 +660,7 @@ cartItems = [
     }
 ];
 
-
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 
 let productsHTML = '';
@@ -865,52 +865,48 @@ function notification(message) {
 
 }
 
-
-
-
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
 function addToCart(button) {
-    const productName = button.dataset.productName;
-    const image = button.dataset.image;
-    const priceCents = Number(button.dataset.priceCents);
-    const id = button.dataset.id;
+  const productName = button.dataset.productName;
+  const image = button.dataset.image;
+  const priceCents = Number(button.dataset.priceCents);
+  const id = button.dataset.id;
 
-    let existingItem = null;
+  const productCard = button.closest('.product-card');
+  const selectedQuantity = Number(
+    productCard.querySelector('.quantity-dropdown').value
+  );
 
-    cart.forEach((item) => {
-        if (item.productName === productName) {
-            existingItem = item;
-        }
-    });
+  let existingItem = null;
 
-    if (existingItem) {
-        existingItem.quantity += 1;
-        existingItem.image = image;
-        existingItem.priceCents = priceCents;
-    } else {
-        cart.push({
-            id: id,
-            productName: productName,
-            quantity: 1,
-            image: image,
-            priceCents: priceCents
-        });
+  cart.forEach((item) => {
+    if (item.productName === productName) {
+      existingItem = item;
     }
+  });
 
-    console.log(cart);
+  if (existingItem) {
+    existingItem.quantity += selectedQuantity;
+    existingItem.image = image;
+    existingItem.priceCents = priceCents;
+  } else {
+    cart.push({
+      id: id,
+      productName: productName,
+      quantity: selectedQuantity,
+      image: image,
+      priceCents: priceCents
+    });
+  }
 
-    localStorage.setItem('cart', JSON.stringify(cart));
-    button.textContent = "Added!";
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCartCount();
 
+  button.textContent = "Added!";
+  setTimeout(() => {
+    button.textContent = "Add to Cart";
+  }, 1000);
 
-    setTimeout(() => {
-        button.textContent = " Add to Cart";
-    }, 1000);
-
-    updateCartCount()
-    notification(` ${productName} Added to Cart `)
-    localStorage.setItem('cart', JSON.stringify(cart));
+  notification(`${productName} Added to Cart`);
 }
 
 
